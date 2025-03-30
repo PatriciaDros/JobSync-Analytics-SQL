@@ -15,14 +15,15 @@ conn = mysql.connector.connect(
 
 # Check building_id repeats (not dupes—multiple jobs)
 df_buildings = pd.read_sql("""
-    SELECT building_id, COUNT(*) as job_count 
-    FROM contract_jobs 
-    GROUP BY building_id 
-    HAVING job_count > 1 
+    SELECT building_id, COUNT(*) as job_count
+    FROM contract_jobs
+    GROUP BY building_id
+    HAVING job_count > 1
     LIMIT 5
 """, conn)
 print("Buildings with Multiple Jobs:")
 print(df_buildings)
+df_buildings.to_csv("buildings_jobs.csv", index=False)
 
 # 1. Total Cost by Project Type
 df_project = pd.read_sql("""
@@ -33,6 +34,8 @@ df_project = pd.read_sql("""
 """, conn)
 print("\nTotal Cost by Project Type:")
 print(df_project)
+df_project.to_csv("project_costs.csv", index=False)  # Right
+
 sns.barplot(x="project_type", y="total_cost", data=df_project)
 plt.title("Total Cost by Project Type")
 plt.xticks(rotation=45)
@@ -41,7 +44,7 @@ plt.clf()
 
 # 2. Cost Trends Over Time
 df_time = pd.read_sql("""
-    SELECT DATE_FORMAT(service_initiation_date, '%Y-%m') AS month, 
+    SELECT DATE_FORMAT(service_initiation_date, '%Y-%m') AS month,
            SUM(current_wa_total_amt) AS monthly_cost
     FROM contract_jobs
     GROUP BY month
@@ -49,7 +52,9 @@ df_time = pd.read_sql("""
 """, conn)
 print("\nCost Trends Over Time:")
 print(df_time)
-sns.lineplot(x="month", y="monthly_cost", data=df_time)  # Fixed typo
+df_time.to_csv("cost_trends.csv", index=False)
+
+sns.lineplot(x="month", y="monthly_cost", data=df_time)
 plt.title("Cost Trends Over Time")
 plt.xticks(rotation=45)
 plt.savefig("cost_trends.png")
@@ -64,6 +69,8 @@ df_priority = pd.read_sql("""
 """, conn)
 print("\nCost by Priority:")
 print(df_priority)
+df_priority.to_csv("priority_costs.csv", index=False)
+
 sns.barplot(x="priority", y="total_cost", data=df_priority)
 plt.title("Cost by Priority")
 plt.savefig("priority_costs.png")
