@@ -64,7 +64,7 @@ JobSync Analytics delivers a robust financial dissection of job contract data, l
 
 ## Key Deliverables
 - **`query.py`:** Core script—SQL-to-visualization pipeline.
-$FinancialDashboard
+- Tableau Dashboard: [https://public.tableau.com/app/profile/patricia.dros/viz/JobSyncFinancialDashboard/JobSyncFinancialDashboard]
 - **Visualizations:**
   - `project_costs.png`: Bar chart of project type expenditures.
   - `cost_trends.png`: Line chart of cost trends.
